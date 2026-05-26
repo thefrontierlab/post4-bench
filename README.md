@@ -84,8 +84,8 @@ The draft-depth optimum is set by the trade-off between more parallel tokens (fa
 
 ## Related
 
-- [Post 1 — What 96 GB of VRAM Actually Gets You](https://thefrontierlab.ai/96gb-vram-unified-memory-hardware-what-you-can-actually-run)
+- [Post 1 — What 96 GB of VRAM Actually Gets You](https://thefrontierlab.ai/what-96gb-of-vram-on-unified-memory-hardware-actually-gets-you-for-local-llm-inference)
 - [Post 2 — Vulkan/RADV vs ROCm 6.4 on Strix Halo](https://thefrontierlab.ai/vulkan-radv-vs-rocm-6-4-on-strix-halo-what-128-benchmark-runs-actually-showed)
-- [Post 3 — ROCm 7.x on the Bosgame M5: 14 Configurations, 14 Failures](https://thefrontierlab.ai/rocm-7x-bosgame-m5-14-configurations-14-failures)
+- [Post 3 — ROCm 7.x on the Bosgame M5: 14 Configurations, 14 Failures](https://thefrontierlab.ai/rocm-7-x-on-the-bosgame-m5-14-configurations-14-failures)
 - [post3-bench](https://github.com/thefrontierlab/post3-bench)
 - [llama.cpp PR #22673 (MTP merge)](https://github.com/ggml-org/llama.cpp/pull/22673) · [PR #23269 (default 16→3 + chaining)](https://github.com/ggml-org/llama.cpp/pull/23269)
