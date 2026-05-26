@@ -1,0 +1,39 @@
+Hier ist eine Python-Funktion zur Token-Counting-Approximation. Bitte review: nenne ein subtiles Bug, einen Performance-Issue, und einen Stilfehler. Antworte kompakt, max. zehn Zeilen insgesamt.
+
+```python
+def estimate_tokens(text: str, tokenizer_name: str = "gpt2") -> int:
+    """Approximate token count for a string without loading a real tokenizer.
+
+    Uses a simple heuristic based on whitespace splitting and average
+    bytes-per-token observed across common English corpora.
+    """
+    import re
+
+    if not text:
+        return 0
+
+    # Split on whitespace and common punctuation
+    parts = re.split(r"[\s\.,;:!?\(\)\[\]\{\}\"\']+", text)
+    parts = [p for p in parts if p]
+
+    # Heuristic: words longer than 4 chars often get split into 2 tokens
+    # by BPE; shorter words map to one token.
+    estimate = 0
+    for p in parts:
+        if len(p) <= 4:
+            estimate += 1
+        else:
+            estimate += len(p) // 4 + 1
+
+    # Add overhead for special tokens (BOS, EOS, etc.)
+    overhead = {"gpt2": 2, "llama": 1, "qwen": 3}.get(tokenizer_name, 2)
+    return estimate + overhead
+
+
+# Test against a realistic prompt
+sample = "Hello, world! This is a test of the token estimator function."
+result = estimate_tokens(sample, tokenizer_name="llama")
+print(f"Estimated: {result} tokens")
+```
+
+Kontext: Diese Funktion wird in einem Logging-Pfad benutzt, hundert Mal pro Sekunde aufgerufen, und der Wert geht in Prometheus-Counter. Die Genauigkeit muss nicht exakt sein, aber sollte stabil und schnell sein. Welche drei Punkte würdest du markieren?

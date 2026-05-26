@@ -1,0 +1,5 @@
+Bench start: 2026-05-17T17:42:39+02:00
+Endpoint:    http://127.0.0.1:8081
+Output:      /home/eh/llamacpp-upgrade-2026-05-17/bench-results/bench-20260517-174239.jsonl
+
+--- warmup qwen35-35b-a3b ---

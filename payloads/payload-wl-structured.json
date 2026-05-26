@@ -1,0 +1,14 @@
+{
+  "model": "qwen36-27b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Fasse die Geschichte des Linux-Kernels in fünf klar abgegrenzten Phasen zusammen. Für jede Phase liefere folgende strukturierte Information:\n\n**Phasenname** (eine prägnante Bezeichnung, z.B. \"Hobby-Projekt 1991–1994\" oder \"Subsystem-Konsolidierung 2003–2008\")\n\n**Zeitraum**: Jahr–Jahr\n\n**Schlüsselereignis**: das definierende Ereignis dieser Phase in einem Satz.\n\n**Hauptcharakter**: die zentrale Figur, die diese Phase prägte (mit Funktion).\n\n**Codebase-Charakteristikum**: was war strukturell anders als in der vorigen Phase? (z.B. monolithisch vs. modular, BitKeeper vs. Git, Lizenzdebatte, neue Architekturen).\n\n**Hauptrepository / Distribution-Channel**: wo lebte der Kernel (FTP-Server, Mailing-Liste, BitKeeper, kernel.org, etc.)?\n\n**Dominante Hardware**: welche Architekturen / Geräteklassen wurden in dieser Phase neu / wichtig?\n\n**Outcome / Übergang**: was zwang die nächste Phase auf? (z.B. SCO-Lawsuit, BitKeeper-Affäre, Cloud-Era, Realtime-Anforderungen).\n\nDie fünf Phasen, die ich erwarte:\n\n1. **Geburt** — Linus Torvalds, Usenet, Minix-Inspiration, GPL-Adoption\n2. **Konsolidierung** — Distros (Slackware, Red Hat, Debian), Apache-Server-Boom, Y2K-Hardening\n3. **Enterprise-Aufstieg** — IBM-Investment, BitKeeper, SCO-Lawsuit, 2.6er Serie\n4. **Git-Ära und Multi-Vendor** — Linus' Git-Schöpfung, Greg KH als Stable-Maintainer, Android explosion\n5. **Cloud, Container, Realtime** — Containers (cgroups/namespaces), eBPF, RT-Patches mainline, RISC-V\n\nPro Phase: zwei kurze Absätze in narrativem Stil, plus die strukturierten Felder als kompaktes Briefing am Ende der Phase. Insgesamt rund 600 Wörter.\n\nWo möglich: nenne konkrete Versionsnummern (z.B. 0.01, 2.4.x, 2.6.0, 3.0, 5.10 LTS), Datierungen (Monat/Jahr), und konkrete commits/messages wenn sie ikonisch sind (z.B. die ursprüngliche comp.os.minix Ankündigung)."
+    }
+  ],
+  "max_tokens": 400,
+  "temperature": 0.7,
+  "top_p": 0.8,
+  "top_k": 20,
+  "stream": false
+}

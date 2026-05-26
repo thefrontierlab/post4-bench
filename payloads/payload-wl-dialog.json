@@ -1,0 +1,14 @@
+{
+  "model": "qwen36-27b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Schreibe einen lebendigen Dialog zwischen einer Senior-Engineerin (Maria, ~15 Jahre Erfahrung, ML-Infrastructure-Schwerpunkt) und einem Junior-Entwickler (Felix, ~1 Jahr Berufserfahrung, frisch aus dem Master), in dem Maria ihm die Vorzüge — und die Fallen — von Multi-Token Prediction in LLM-Inference erklärt.\n\nAnforderungen an den Dialog:\n\n- **Mindestens 10 Wechsel** zwischen den Sprechern, abwechselnd ausführliche Erklärungen von Maria und gut gestellte Rückfragen von Felix.\n- **Konkrete technische Beispiele** in dem Dialog: Felix darf einen Python-Code-Schnipsel zeigen den er gerade implementiert hat (z.B. einen einfachen speculative-decoding-loop), Maria korrigiert ihn an der Tafel oder via Pair-Programming.\n- **Konflikt-Moment**: an einer Stelle widerspricht Felix Maria — vielleicht weil er einen Benchmark gesehen hat der das Gegenteil behauptet, oder weil er denkt sie überkompliziere die Sache. Maria reagiert geduldig aber bestimmt, demonstriert warum sein Verständnis lückenhaft ist.\n- **Konkrete Themen, die im Dialog vorkommen müssen**:\n  1. Was speculative decoding überhaupt ist (draft + verify pattern)\n  2. Warum naive Implementierungen (z.B. ngram-cache) limitiert sind\n  3. Wie MTP-Heads in modernen Modellen (Qwen3, DeepSeek-V3) das verbessern\n  4. Acceptance-Rate als Schlüsselmetrik — und warum hohe Acceptance allein noch keinen Speedup garantiert\n  5. Der Verify-Cost-Trade-off: warum bei MoE-Modellen höhere draft-N nicht automatisch besser sind (super-linearer expert-batching cost)\n  6. Sampler-Coupling: wie presence-penalty oder repetition-penalty die acceptance-rate beeinflussen\n  7. Hardware-spezifische Optimum-Verschiebung: ein Sweet-Spot auf RTX 4090 ist nicht der Sweet-Spot auf AMD Strix Halo\n- **Ton**: kollegial-mentorenhaft. Maria ist nicht herablassend, Felix nicht devot. Beide tippen Code, beide trinken Kaffee. Ein paar lockere Bemerkungen über das Office, die Build-Pipeline, die Konferenz die nächste Woche stattfindet.\n\nFormat: Sprecher in fettem Markdown am Anfang der Zeile (`**Maria:**`, `**Felix:**`), gefolgt von der Replik. Code-Blocks zwischendurch als Markdown-Code-Fences. Insgesamt rund 550 Wörter, plus den Code-Schnipsel-Block den Felix zeigt und Maria refaktoriert.\n\nSchreibe den Dialog vollständig aus. Ende mit einem natürlichen Abschluss — beide gehen Mittagessen oder zum nächsten Meeting, nachdem Felix die Architektur verstanden hat und Maria ihm noch zwei Paper als Hausaufgabe gibt."
+    }
+  ],
+  "max_tokens": 400,
+  "temperature": 0.7,
+  "top_p": 0.8,
+  "top_k": 20,
+  "stream": false
+}

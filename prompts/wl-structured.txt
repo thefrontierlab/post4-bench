@@ -1,0 +1,29 @@
+Fasse die Geschichte des Linux-Kernels in fünf klar abgegrenzten Phasen zusammen. Für jede Phase liefere folgende strukturierte Information:
+
+**Phasenname** (eine prägnante Bezeichnung, z.B. "Hobby-Projekt 1991–1994" oder "Subsystem-Konsolidierung 2003–2008")
+
+**Zeitraum**: Jahr–Jahr
+
+**Schlüsselereignis**: das definierende Ereignis dieser Phase in einem Satz.
+
+**Hauptcharakter**: die zentrale Figur, die diese Phase prägte (mit Funktion).
+
+**Codebase-Charakteristikum**: was war strukturell anders als in der vorigen Phase? (z.B. monolithisch vs. modular, BitKeeper vs. Git, Lizenzdebatte, neue Architekturen).
+
+**Hauptrepository / Distribution-Channel**: wo lebte der Kernel (FTP-Server, Mailing-Liste, BitKeeper, kernel.org, etc.)?
+
+**Dominante Hardware**: welche Architekturen / Geräteklassen wurden in dieser Phase neu / wichtig?
+
+**Outcome / Übergang**: was zwang die nächste Phase auf? (z.B. SCO-Lawsuit, BitKeeper-Affäre, Cloud-Era, Realtime-Anforderungen).
+
+Die fünf Phasen, die ich erwarte:
+
+1. **Geburt** — Linus Torvalds, Usenet, Minix-Inspiration, GPL-Adoption
+2. **Konsolidierung** — Distros (Slackware, Red Hat, Debian), Apache-Server-Boom, Y2K-Hardening
+3. **Enterprise-Aufstieg** — IBM-Investment, BitKeeper, SCO-Lawsuit, 2.6er Serie
+4. **Git-Ära und Multi-Vendor** — Linus' Git-Schöpfung, Greg KH als Stable-Maintainer, Android explosion
+5. **Cloud, Container, Realtime** — Containers (cgroups/namespaces), eBPF, RT-Patches mainline, RISC-V
+
+Pro Phase: zwei kurze Absätze in narrativem Stil, plus die strukturierten Felder als kompaktes Briefing am Ende der Phase. Insgesamt rund 600 Wörter.
+
+Wo möglich: nenne konkrete Versionsnummern (z.B. 0.01, 2.4.x, 2.6.0, 3.0, 5.10 LTS), Datierungen (Monat/Jahr), und konkrete commits/messages wenn sie ikonisch sind (z.B. die ursprüngliche comp.os.minix Ankündigung).

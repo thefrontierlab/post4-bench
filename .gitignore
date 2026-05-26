@@ -1,0 +1,13 @@
+# Per-run server logs and stream/temp/vram poll files — these are bulky
+# transient artifacts. Final aggregated CSVs in results/ are the citeable
+# data; logs are kept locally for post-mortem only.
+logs/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# macOS / editor artifacts (in case anyone clones on different OS)
+.DS_Store
+.idea/
+.vscode/

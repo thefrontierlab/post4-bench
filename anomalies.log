@@ -1,0 +1,126 @@
+## Anomalies Log — Post 4 Bench Preparation
+
+Format: `[YYYY-MM-DD HH:MM] [SEVERITY] description`
+
+SEVERITY: INFO | WARN | BLOCK
+
+---
+
+[2026-05-17 17:30] [INFO] Initial llama.cpp upgrade b9016 → b9199 deployed. MTP feature
+freshly merged (PR #22673), default --spec-draft-n-max=16 catastrophic on 1-MTP-head
+models (35B-A3B: -75% vs baseline at default). Sweet-spot empirically found at n=2.
+
+[2026-05-17 17:42] [INFO] Aggregate-Script auf falscher Metrik: %MTP_of_out wurde als
+draft_n_accepted/draft_n (= per-draft acceptance) berechnet statt als
+draft_n_accepted/predicted_n (= % von OUTPUT tokens that came via MTP). Korrigiert
+in bench-ab-mtp.sh / -27b.sh am 17.05. nach dem ersten Bench.
+
+[2026-05-18 22:09] [WARN] Production binary `/usr/local/bin/llama-server` ist STATISCH,
+aber default master-build ist seit irgendeinem CMakeLists-Update SHARED. Patch:
+`-DBUILD_SHARED_LIBS=OFF` in cmake configure-Step explizit setzen, sonst landet die
+hot-swappable binary in einer Hand voll .so files. Build #2 hat das gefixt.
+
+[2026-05-18 17:30] [WARN] presence-penalty=0.0 in production preset war ein Erbstück
+aus dem b9016-Setup. Unsloth-Doku empfiehlt 1.5 für non-thinking-mode bei Qwen3.6.
+Geändert nach Cross-Check. Aber: 1.5 reduziert MTP-Acceptance auf 27B Dense um
+3pp (63.7% → 60.7%), Speedup-Verlust ~14.4pp (von +80% auf +65.6%). Trade-off
+Quality vs Speed wurde zugunsten Quality entschieden (OpenClaw / Cron-jobs nutzen
+MTP-aliases produktiv, brauchen presence-penalty=1.5).
+
+[2026-05-19 14:32] [INFO] PR #23269 "MTP clean-up" gemerged. Neue Defaults:
+--spec-draft-n-max=3 (von 16), --spec-draft-p-min=0.0 (neuer Param exposed). Plus
+multi-spec-type chaining ermöglicht (draft-mtp + ngram-mod + ngram-map-k4v als
+parallel drafters). Production-Sweet-Spot bei Dense von n=4 auf n=3 verschoben
+(beide gleichauf, n=3 = neuer Default).
+
+[2026-05-19 13:30] [INFO] Unsloth hat 14-16h zuvor beide MTP-GGUFs neu hochgeladen
+(post PR #23237 qwen-conversion bid-fix). Re-download nötig — alte Quants hatten
+falsche MTP-Layer-Source-Mapping. Size identisch (Tensor-Bytes unverändert),
+SHA256 verschieden.
+
+[2026-05-21 22:42] [INFO] Day-2-Bench reproduzierte Sweet-Spots stabil. Mean
+MoE: 56.87 t/s, Dense: 16.91 t/s. presence-penalty=1.5 deutlich messbar.
+
+[2026-05-22] [INFO] Discord-Plugin Patches deployed im claude-plugin cache —
+DISCORD_ALLOWED_BOT_IDS allowlist + per-bot rate-limit. Nicht direkt bench-relevant
+aber blocks future plugin updates falls nicht persistiert.
+
+[2026-05-23 10:58] [INFO] b9295 deployed (PR #23287 backend-sampling default=enabled +
+#23433 inp_out_ids logit-skip + #23461 VRAM-leak-fix). Bench-Result: MoE +3.1%
+gegenüber b9235, Dense +6.6% — Dense profitiert systematisch stärker von
+Sampler-roundtrip-Eliminierung weil per-token-cost niedriger und Sampler relativ
+größerer Anteil.
+
+[2026-05-23 11:03] [WARN] Während Day-3-Bench: ALL 4 backend processes loaded
+gleichzeitig (35B-A3B baseline + mtp, 27B baseline + mtp). Vulkan0-Claims summieren
+auf ~105 GB vs 96 GB VRAM-Carveout. Paging zwischen backends im UMA-bereich
+beobachtbar (GTT_used=17 GB, VRAM_used=96/96). Inferenz-Performance trotzdem stabil.
+
+[2026-05-23 11:15] [INFO] VRAM-Paging-Validation: MoE backends entladen, nur Dense
+loaded. Re-bench Dense baseline + mtp n=3. Result: keine messbare Verbesserung
+(Δ +1.0% Mean, ±7% per-prompt Varianz). Schluss: Paging hat keinen sustained-load
+Tax. Switch-Cost (Backend-Wechsel beim Alias-Change) ist die einzige reale Penalty.
+
+[2026-05-23 18:15] [INFO] Discord channel: @everyone matched in mention-check
+(discord.js default options haben everyone:true), kommt durch requireMention=true
+gate. Sparsam verwenden.
+
+[2026-05-26 14:56] [INFO] Erik fragt nach post4-bench/tldr.md — existiert nicht
+weil controlled-Wave noch nicht gelaufen ist. Preliminary tldr.md geschrieben
+basierend auf Production-Daten. Wave-Scripts scaffolded und bereit zum Lauf.
+
+---
+
+## Known Open Items (für Brief V1 zu adressieren)
+
+- Wave 4 (multi-spec-type chaining via PR #23269) ist experimentell — niemand
+  in dem Community hat das systematisch auf Strix Halo gemessen. Ergebnis kann
+  zwischen "+X% on top" und "neutral/negativ durch Compute-Konkurrenz auf
+  single-Vulkan-Queue" liegen.
+
+- `--spec-draft-backend-sampling` default=enabled seit b9295 — nicht trivially
+  abschaltbar pro alias im preset (default ist global). Falls Wave-Cell-Vergleich
+  mit/ohne backend-sampling gewollt: extra env-var via systemd-unit oder direkter
+  CLI-Override.
+
+- Workload-Prompt wl-code mit 837 Tokens leicht über 800-Tok-Target.
+  Vermutlich akzeptabel, aber wenn Wave 2 stark variiert, könnte das den Effekt
+  verwässern. Alternative: kürzen auf ~600 tok.
+
+- Wave 2 Workload "dialog" hatte in Day-2 mit b9219 paradoxen -7.6% Effekt bei n=2
+  vs n=4 für 35B-MoE (Maria-Felix dialog). Plausibel: niedrige acceptance bei
+  natural-language-Dialog stark frequency-dependent. Wave 2 mit n=5/Cell wird
+  zeigen ob das robust ist oder Run-to-Run-Artefakt.
+
+[2026-05-26 15:56 → 17:50] [INFO] Full controlled wave-run executed by Erik via
+run_all.sh. 260 runs total across 52 cells:
+  Wave 1 (n_max sweep): 160 runs ✓
+  Wave 2 (workload-type): 50 runs ✓
+  Wave 3 (sampler A/B): 20 runs ✓
+  Wave 4 (multi-spec-type chaining): 30 runs ✓
+
+Key findings:
+- Default n=16 trap confirmed at controlled-n=4 statistics:
+  * MoE n=16 = -75% vs baseline
+  * Dense n=16 = -39% vs baseline + thermal_flag triggered (89°C edge temp,
+    above 85°C threshold) on long-prompt cells
+- Sweet-spots stable: MoE n=2 (+10-11%), Dense n=3 (+61-65%)
+- Workload-spread confirmed and amplified:
+  * Dense + code = +129% (best single cell of whole bench)
+  * MoE + code = +37%
+- Sampler-coupling (Wave 3): Dense -7.2% with p=1.5, MoE -2.0% — confirms
+  Dense is more affected, consistent with production-data direction
+- Multi-spec-type chaining (Wave 4): essentially flat. Dense +1-2%, MoE -2 to -5%.
+  Single-Vulkan-Queue compute-contention dominates over additional acceptance
+  paths. Confirms Recon B's hypothesis.
+
+[2026-05-26 17:50] [INFO] matplotlib was missing from venv; installed via
+pip install --user matplotlib. 4 wave-charts generated in results/plots/.
+
+[2026-05-26 17:50] [INFO] Wave 1 actually had 8 n_max values (0,1,2,3,4,6,8,16)
+not 7 as Recon B planned — extra zero-baseline cell. 160 runs instead of 140.
+Cleaner curves as a result.
+
+[2026-05-26 18:00] [INFO] Bench complete. tldr.md updated with final numbers.
+Post 4 brief V1 in Claude Desktop can now reference controlled data instead
+of preliminary.

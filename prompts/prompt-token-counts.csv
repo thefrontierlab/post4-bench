@@ -1,0 +1,8 @@
+prompt_id,token_count,char_count,file
+wl-code,837,2885,prompts/wl-code.txt
+wl-creative,805,2989,prompts/wl-creative.txt
+wl-dialog,641,2489,prompts/wl-dialog.txt
+wl-structured,593,1863,prompts/wl-structured.txt
+wl-technical,709,2537,prompts/wl-technical.txt
+prompt-medium,461,1570,prompts/prompt-medium.txt
+prompt-long,3799,12933,prompts/prompt-long.txt

@@ -1,0 +1,14 @@
+{
+  "model": "qwen36-27b",
+  "messages": [
+    {
+      "role": "user",
+      "content": "Vergleiche Vulkan und ROCm als GPU-Compute-Backends für LLM-Inference. Strukturiere die Antwort in fünf Abschnitten, jeweils mit konkreten technischen Argumenten — keine Marketing-Sprache.\n\n**1. API-Architektur und Abstraction-Layer**\n\nWas sind die fundamentalen Unterschiede zwischen Vulkan (offener Standard, Khronos, generisch über alle GPU-Vendor) und ROCm (AMD-spezifisch, HIP als CUDA-Äquivalent)? Wo liegen die Abstraction-Boundaries? Was ist die Auswirkung auf Portabilität und Wartung?\n\n**2. Kernel-Treiber- und Userspace-Stack**\n\nStelle gegen­über: amdgpu + Mesa/RADV (Vulkan-Pfad) vs. amdgpu + ROCm Runtime + HSA + HIP (ROCm-Pfad). Welche Komponenten sind im Linux-Mainline, welche out-of-tree? Wie sieht das bei Distributionen wie Fedora, Ubuntu LTS, oder rolling-release Distros aus? Wo gibt es Versionsabhängigkeiten die in der Praxis brechen?\n\n**3. Multi-GPU und Performance-Skalierung**\n\nWie gehen beide Backends mit Multi-GPU um? Vulkan hat `VK_KHR_external_memory_*` für IPC, ROCm hat RCCL für collective communication. Wann ist welches besser? Was passiert bei heterogenen GPUs (z.B. eine RDNA3 + eine RDNA2 im selben System)?\n\n**4. Stabilität und Treiber-Reife auf neuer Hardware**\n\nBeispiel: AMD Ryzen AI MAX+ 395 (Strix Halo, gfx1151, integrierte Radeon 8060S) — wie verhält sich Vulkan vs. ROCm dort? Bekannte Issues, Workarounds, BIOS-Abhängigkeiten? Welcher Pfad ist für neue Hardware typischerweise zuerst stabil?\n\n**5. Coherence-Model und Memory-Architektur**\n\nWie sehen beide Backends Memory? Vulkan hat explicit memory types (`HOST_VISIBLE`, `DEVICE_LOCAL`, `HOST_COHERENT`, etc.), ROCm hat HSA mit unified addressing. Bei UMA-Architekturen wie Strix Halo (shared LPDDR5x, kein separater VRAM) — gibt es Unterschiede im effective memory bandwidth? Bei dedicated dGPUs (z.B. 7900 XTX) — wann lohnt sich expliziter Staging vs. direct mapping?\n\n**6. Tooling und Debugability**\n\nVulkan: RenderDoc, VK_EXT_debug_utils, RGP (Radeon GPU Profiler). ROCm: rocprof, omnitrace, HSA-Tools, rocm-smi. Was lässt sich womit besser debuggen? Bei LLM-Inference: welches Profil-Tool liefert für Layer-Latency-Aufschlüsselung die brauchbareren Daten?\n\nJeder Abschnitt: 80–120 Wörter, mit mindestens einem konkreten Beispiel oder einer konkret nennbaren Version/Tool. Schreibe in technisch präzisem Stil, keine Generalisierungen ohne Quelle.\n\nAm Ende: eine kurze Bewertungsmatrix als ASCII-Tabelle mit Spalten Kriterium, Vulkan, ROCm, und einer Bewertung „besser / gleich / schlechter\" pro Zeile."
+    }
+  ],
+  "max_tokens": 400,
+  "temperature": 0.7,
+  "top_p": 0.8,
+  "top_k": 20,
+  "stream": false
+}

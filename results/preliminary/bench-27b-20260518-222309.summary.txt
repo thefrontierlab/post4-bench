@@ -1,0 +1,6 @@
+Bench start: 2026-05-18T22:23:09+02:00
+Endpoint:    http://127.0.0.1:8081
+Output:      /home/eh/llamacpp-upgrade-2026-05-17/bench-results/bench-27b-20260518-222309.jsonl
+
+--- warmup qwen36-27b ---
+--- warmup qwen36-27b-mtp ---

@@ -1,0 +1,21 @@
+Bench start: 2026-05-23T11:15:41+02:00
+Endpoint:    http://127.0.0.1:8081
+Output:      /home/eh/llamacpp-upgrade-2026-05-17/bench-results/bench-27b-20260523-111541.jsonl
+
+--- warmup qwen36-27b ---
+--- warmup qwen36-27b-mtp ---
+
+=== Measurement runs ===
+alias                  prompt  prompt_t/s    gen_t/s    out_n    draft_n   %MTP_of_out
+qwen36-27b             0        154.74      10.20      400          0          0.0%
+qwen36-27b             1        122.75      10.21      400          0          0.0%
+qwen36-27b             2        117.83      10.22      400          0          0.0%
+qwen36-27b             3        109.11      10.21      400          0          0.0%
+qwen36-27b             4        106.79      10.21      400          0          0.0%
+qwen36-27b-mtp         0        143.02      16.65      400        521         56.2%
+qwen36-27b-mtp         1        111.78      25.70      400        335         71.8%
+qwen36-27b-mtp         2        107.24      16.37      400        530         55.5%
+qwen36-27b-mtp         3         98.05      16.08      400        540         54.8%
+qwen36-27b-mtp         4         97.98      18.75      400        462         61.3%
+
+Bench end: 2026-05-23T11:20:52+02:00

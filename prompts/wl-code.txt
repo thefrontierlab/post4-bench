@@ -1,0 +1,41 @@
+Implementiere in Python eine vollständige `BinarySearchTree`-Klasse mit folgenden Anforderungen. Schreibe sauberen, idiomatischen Code mit Type Hints, Docstrings (Google-Style), und Tests am Ende der Datei mit `pytest`.
+
+Methoden, die enthalten sein müssen:
+
+1. `insert(value)`: fügt einen neuen Wert ein. Duplikate werden ignoriert (keine Exception, kein Insert).
+2. `delete(value)`: entfernt einen Knoten korrekt — Standardimplementierung mit drei Fällen (keine Kinder, ein Kind, zwei Kinder mit in-order successor).
+3. `search(value) -> bool`: existiert der Wert im Baum?
+4. `in_order_traversal() -> list[int]`: liefert sortierte Liste aller Werte.
+5. `pre_order_traversal() -> list[int]` und `post_order_traversal() -> list[int]`: zusätzliche Traversierungen.
+6. `level_order_traversal() -> list[list[int]]`: BFS, Liste pro Ebene.
+7. `height() -> int`: Höhe des Baums (-1 für leeren Baum, 0 für einzelnen Knoten).
+8. `size() -> int`: Anzahl der Knoten.
+9. `is_balanced() -> bool`: prüft AVL-Balance-Bedingung (Höhendifferenz ≤ 1 in jedem Knoten).
+10. `serialize() -> str`: serialisiert den Baum als String (Pre-Order mit Null-Markern), so dass `deserialize()` ihn rekonstruieren kann.
+11. `deserialize(s: str) -> BinarySearchTree`: Klassenmethode, die einen serialisierten String zurück in einen Baum verwandelt.
+12. `__eq__(other)`: zwei Bäume sind gleich, wenn ihre Struktur und Werte identisch sind.
+13. `__repr__()`: lesbare Repräsentation.
+
+Zusätzlich:
+
+- Verwende einen separaten `_Node`-Datatype (entweder NamedTuple, dataclass oder verschachtelte Klasse).
+- Rebalancing nach Insert/Delete ist NICHT verlangt — implementiere als reinen BST, nicht als AVL.
+- Iterativ wo sinnvoll, rekursiv wo lesbarer.
+- Edge Cases: leerer Baum, Single-Node-Operationen, Delete der Root, Delete eines Nodes der gar nicht existiert (kein Effekt, keine Exception).
+
+Tests mit `pytest`:
+
+- `test_insert_and_search`: 10 Einfügungen, dann 10 erfolgreiche und 5 erfolglose Suchen.
+- `test_delete_three_cases`: separate Cases für leaf, single-child, two-children.
+- `test_traversals`: vergleicht in-order, pre-order, post-order, level-order gegen erwartete Listen.
+- `test_serialize_roundtrip`: serialize → deserialize → equality-check.
+- `test_height_and_size`: prüft beide Werte nach Insert/Delete-Sequenz.
+- `test_empty_tree`: alle Operationen liefern sinnvolle Defaults ohne Crashes.
+- `test_json_roundtrip`: zusätzlich serialize-via-JSON (json.dumps der serialize()-Ausgabe), damit der Baum über REST oder File persistierbar ist.
+
+Stil:
+- Python 3.11+ Syntax.
+- Imports am Anfang, Konstanten in UPPER_CASE.
+- Eine Beispielanwendung am Ende: konstruiere einen Baum mit den Werten `[50, 30, 70, 20, 40, 60, 80, 10, 25, 35, 45]`, führe alle Methoden einmal aus und gib das Ergebnis lesbar aus.
+
+Schreibe den kompletten Code inline, mit Kommentaren wo nicht-trivial.
